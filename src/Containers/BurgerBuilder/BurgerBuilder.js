@@ -21,20 +21,20 @@ export class BurgerBuilder extends Component {
     },
     totalPrice: 4,
     purchasable: false,
-    purchasing:false
+    purchasing: false,
   };
-  updatePurchaseState(ingredients){
-      // const ingredients= {
-      //     ...this.state.ingredients
-      // };
-      const sum = Object.keys(ingredients)
-      .map(igKey => {
-          return ingredients[igKey]
+  updatePurchaseState(ingredients) {
+    // const ingredients= {
+    //     ...this.state.ingredients
+    // };
+    const sum = Object.keys(ingredients)
+      .map((igKey) => {
+        return ingredients[igKey];
       })
-      .reduce((sum, el)=>{
-          return sum+el;
-      },0);
-      this.setState({purchasable: sum>0});
+      .reduce((sum, el) => {
+        return sum + el;
+      }, 0);
+    this.setState({ purchasable: sum > 0 });
   }
 
   addIngredientHandler = (type) => {
@@ -48,7 +48,7 @@ export class BurgerBuilder extends Component {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updatePurchaseState(updatedIngredients)
+    this.updatePurchaseState(updatedIngredients);
   };
 
   removeIngredientHandler = (type) => {
@@ -65,13 +65,19 @@ export class BurgerBuilder extends Component {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updatePurchaseState(updatedIngredients)
-
+    this.updatePurchaseState(updatedIngredients);
   };
-  purchaseHandler=()=>{
-    this.setState({purchasing:true}); 
+  purchaseHandler = () => {
+    this.setState({ purchasing: true });
+  };
+
+  purchaseCancelHandler=()=>{
+    this.setState({purchasing:false})
   }
 
+  purchaseContinueHandler =()=>{
+    alert('Continue')
+  }
   render() {
     const disabledInfo = {
       ...this.state.ingredients,
@@ -81,9 +87,12 @@ export class BurgerBuilder extends Component {
     } //{salad:true, meat:false............}
     return (
       <AuxComp>
-        <Modal show={this.state.purchasing} >
-          <OrderSummary ingredients={this.state.ingredients} />
-           </Modal>
+        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+          <OrderSummary 
+            ingredients={this.state.ingredients}
+            purchaseCanceled={this.purchaseCancelHandler}
+            purchaseContinued={this.purchaseContinueHandler}   />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
