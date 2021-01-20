@@ -4,7 +4,7 @@ import React from 'react'
 const Logo = (props) => {
     return (
         <div className={classes.Logo} style={{height:props.height}}>
-            <img src={burgerLogo} />
+            <img src={burgerLogo} alt="Logo image" />
         </div>
     )
 }
